@@ -1,0 +1,41 @@
+# Entornos virtuales
+venv/
+mi_entorno/
+env/
+*.venv
+*.virtualenv
+
+# Archivos de Python compilados
+*.pyc
+*.pyo
+__pycache__/
+
+# Configuración del editor
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Archivos de dependencias
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# Configuración y datos sensibles
+.env
+*.sqlite3
+db.sqlite3
+instance/
+config.py
+settings.py
+
+# Logs y caché
+logs/
+*.log
+debug.log
+nohup.out
+
+# Archivos de despliegue en PythonAnywhere
+*.tar.gz
+*.zip
+staticfiles/
+media/
