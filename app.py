@@ -10,31 +10,36 @@ from routes.devolucion import devoluciones_bp
 from routes.etiquetas import etiquetas_bp
 from routes.libros_etiquetas import libros_etiquetas_bp
 from routes.categoria import categorias_bp
-from config import Config
+from config import Config, TestingConfig
 import jwt
 from functools import wraps
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 
-app = Flask(__name__)
-bcrypt = Bcrypt(app)
-app.config.from_object(Config)
+bcrypt = Bcrypt()
 
-CORS(app)
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+    
+    CORS(app)
 
-db.init_app(app)
-migrate = Migrate(app, db)
+    db.init_app(app)
+    bcrypt.init_app(app)
+    Migrate(app, db)
 
-# Registrar Blueprints
-app.register_blueprint(bibliotecarios_bp)
-app.register_blueprint(lectores_bp)
-app.register_blueprint(libros_bp)
-app.register_blueprint(prestamos_bp)
-app.register_blueprint(reservas_bp)
-app.register_blueprint(devoluciones_bp)
-app.register_blueprint(etiquetas_bp)
-app.register_blueprint(libros_etiquetas_bp)
-app.register_blueprint(categorias_bp)
+    # Registrar Blueprints
+    app.register_blueprint(bibliotecarios_bp)
+    app.register_blueprint(lectores_bp)
+    app.register_blueprint(libros_bp)
+    app.register_blueprint(prestamos_bp)
+    app.register_blueprint(reservas_bp)
+    app.register_blueprint(devoluciones_bp)
+    app.register_blueprint(etiquetas_bp)
+    app.register_blueprint(libros_etiquetas_bp)
+    app.register_blueprint(categorias_bp)
+
+    return app
 
 def token_required(f):
     @wraps(f)
@@ -52,5 +57,7 @@ def token_required(f):
     return decorated
 
 if __name__ == '__main__':
+    app = create_app()
     app.run(debug=True)
+
 
